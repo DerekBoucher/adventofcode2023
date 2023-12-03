@@ -7,6 +7,10 @@ struct Args {
     /// Path towards the input file
     #[arg(short, long)]
     path: String,
+
+    /// Determines the algorithm to use based on the problem part.
+    #[arg(short, long, default_value_t = 1)]
+    alg_used: u32,
 }
 
 fn main() {
@@ -28,9 +32,15 @@ fn main() {
 
     let seperate_lines: Vec<String> = input.lines().map(|line| String::from(line)).collect();
 
+    if args.alg_used == 1 {
+        part1_alg(seperate_lines);
+    }
+}
+
+fn part1_alg(lines: Vec<String>) {
     let mut calibration_sum = 0;
 
-    for line in seperate_lines {
+    for line in lines {
         let chars: Vec<char> = line.chars().map(|char| char).collect();
 
         // Use a two pointer solution -> one at the begining of the string and one at the end to find the enclosing integers
