@@ -19,3 +19,17 @@ Calibration sum: 55002
 // Part 2
 Calibration sum: 55093
 ```
+
+# Day 2
+
+How to run:
+```rust
+// Part 1
+RUST_LOG=info cargo run -p day2 -- -p ./day2/input.txt
+```
+
+Solutions:
+```
+// Part 1
+id sum: 2265
+```

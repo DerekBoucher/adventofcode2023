@@ -48,6 +48,32 @@ fn main() {
     let games = parse_games(seperate_lines);
 
     log::debug!("Games: {:?}", games);
+
+    let mut sum_ids = 0;
+
+    for game in games {
+        if !game_is_possible(game.Sets) {
+            log::debug!("Game with ID {} is impossible", game.id);
+            continue;
+        }
+
+        sum_ids += game.id;
+    }
+
+    log::info!("Sum of IDs for possible games: {}", sum_ids);
+}
+
+fn game_is_possible(sets: Vec<Set>) -> bool {
+    for set in sets {
+        if set.red_cubes > MAX_RED_CUBES
+            || set.green_cubes > MAX_GREEN_CUBES
+            || set.blue_cubes > MAX_BLUE_CUBES
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 fn parse_games(lines: Vec<String>) -> Vec<Game> {
