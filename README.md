@@ -5,15 +5,17 @@
 How to run:
 ```rust
 // Part 1
-RUST_LOG=info cargo run -p day1 -- -p ./day1/input.txt -a 1
+RUST_LOG=info cargo run -p day1 -- -p ./day1/input.txt -a part1
 
 // Part 2
-RUST_LOG=info cargo run -p day1 -- -p ./day1/input.txt -a 2
+RUST_LOG=info cargo run -p day1 -- -p ./day1/input.txt -a part2
 ```
 
-Part 1 solution:
+Solutions:
 ```
+// Part 1
 Calibration sum: 55002
-```
 
-Part 2
+// Part 2
+Calibration sum: 55093
+```
