@@ -1,18 +1,9 @@
 #[test]
-fn parse_games() {
-    let input: Vec<String> = vec![
-        String::from(
-            "Game 1: 1 red, 1 green, 1 blue; 2 red, 2 green, 2 blue; 3 red, 3 green, 3 blue",
-        ),
-        String::from(
-            "Game 2: 1 red, 1 green, 1 blue; 2 red, 2 green, 2 blue; 3 red, 3 green, 3 blue",
-        ),
-    ];
-
-    let expected: Vec<super::Game> = vec![
+fn part2_alg() {
+    let input: Vec<super::Game> = vec![
         super::Game {
             id: 1,
-            Sets: vec![
+            sets: vec![
                 super::Set {
                     red_cubes: 1,
                     green_cubes: 1,
@@ -32,12 +23,7 @@ fn parse_games() {
         },
         super::Game {
             id: 2,
-            Sets: vec![
-                super::Set {
-                    red_cubes: 1,
-                    green_cubes: 1,
-                    blue_cubes: 1,
-                },
+            sets: vec![
                 super::Set {
                     red_cubes: 2,
                     green_cubes: 2,
@@ -48,9 +34,16 @@ fn parse_games() {
                     green_cubes: 3,
                     blue_cubes: 3,
                 },
+                super::Set {
+                    red_cubes: 4,
+                    green_cubes: 4,
+                    blue_cubes: 4,
+                },
             ],
         },
     ];
 
-    let actual = super::parse_games(input);
+    let expected = 91;
+    let actual = super::part2_alg(input);
+    assert_eq!(expected, actual);
 }

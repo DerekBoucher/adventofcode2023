@@ -1,4 +1,4 @@
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 
 mod test;
 
@@ -8,12 +8,21 @@ struct Args {
     /// Path towards the input file
     #[arg(short, long)]
     path: String,
+
+    #[arg(short, long)]
+    alg_used: AlgorithmChoice,
+}
+
+#[derive(Debug, Clone, ValueEnum)]
+enum AlgorithmChoice {
+    Part1 = 1,
+    Part2,
 }
 
 #[derive(Debug)]
 struct Game {
     id: i32,
-    Sets: Vec<Set>,
+    sets: Vec<Set>,
 }
 
 #[derive(Debug)]
@@ -46,21 +55,12 @@ fn main() {
 
     let seperate_lines: Vec<String> = input.lines().map(|line| String::from(line)).collect();
     let games = parse_games(seperate_lines);
-
     log::debug!("Games: {:?}", games);
 
-    let mut sum_ids = 0;
-
-    for game in games {
-        if !game_is_possible(game.Sets) {
-            log::debug!("Game with ID {} is impossible", game.id);
-            continue;
-        }
-
-        sum_ids += game.id;
+    _ = match args.alg_used {
+        AlgorithmChoice::Part1 => part1_alg(games),
+        AlgorithmChoice::Part2 => part2_alg(games),
     }
-
-    log::info!("Sum of IDs for possible games: {}", sum_ids);
 }
 
 fn game_is_possible(sets: Vec<Set>) -> bool {
@@ -93,7 +93,7 @@ fn parse_games(lines: Vec<String>) -> Vec<Game> {
 
         let mut current_game = Game {
             id: id,
-            Sets: vec![],
+            sets: vec![],
         };
 
         for set in set_segments {
@@ -117,11 +117,62 @@ fn parse_games(lines: Vec<String>) -> Vec<Game> {
                 }
             }
 
-            current_game.Sets.push(current_set);
+            current_game.sets.push(current_set);
         }
 
         games.push(current_game);
     }
 
     return games;
+}
+
+fn part1_alg(games: Vec<Game>) -> i32 {
+    let mut sum_ids = 0;
+
+    for game in games {
+        if !game_is_possible(game.sets) {
+            log::debug!("Game with ID {} is impossible", game.id);
+            continue;
+        }
+
+        sum_ids += game.id;
+    }
+
+    log::info!("Sum of IDs for possible games: {}", sum_ids);
+
+    return sum_ids;
+}
+
+fn part2_alg(games: Vec<Game>) -> i32 {
+    let mut sum_powers = 0;
+
+    for game in games {
+        let mut minimum_set: Set = Set {
+            red_cubes: 0,
+            green_cubes: 0,
+            blue_cubes: 0,
+        };
+
+        for set in game.sets {
+            if set.red_cubes > minimum_set.red_cubes {
+                minimum_set.red_cubes = set.red_cubes;
+            }
+
+            if set.green_cubes > minimum_set.green_cubes {
+                minimum_set.green_cubes = set.green_cubes;
+            }
+
+            if set.blue_cubes > minimum_set.blue_cubes {
+                minimum_set.blue_cubes = set.blue_cubes;
+            }
+        }
+
+        log::debug!("Minimum set: {:?}", minimum_set);
+
+        sum_powers += minimum_set.red_cubes * minimum_set.green_cubes * minimum_set.blue_cubes;
+    }
+
+    log::info!("Sum of powers: {}", sum_powers);
+
+    return sum_powers;
 }
